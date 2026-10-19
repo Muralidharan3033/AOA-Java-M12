@@ -1,29 +1,30 @@
 
-# EX 2C Job Sequencing using Greedy Approach
+# EX 2D Pattern Matching using Naive Approach.
 ## DATE: 11.08.26
 ## AIM:
-To write a Java program that schedules jobs using the Greedy Approach. Each job has:
+To write a Java program to for given constraints.
+Given text string with length n and a pattern with length m, the task is to prints all occurrences of pattern in text.
+Note: You may assume that n > m.
 
-A unique Job ID
-A Deadline
-A Profit (earned only if the job is completed on or before its deadline)
-Each job takes 1 unit of time and only one job can be done at a time. The goal is to complete the maximum number of jobs with the maximum total profit.
+Examples: 
+
+Input:  text = "THIS IS A TEST TEXT", pattern = "TEST"
+Output: Pattern found at index 10
+
+Input:  text =  "AABAACAADAABAABA", pattern = "AABA"
+Output: Pattern found at index 0, Pattern found at index 9, Pattern found at index 12
 
 ## Algorithm:
 
-1.Read the number of jobs and input each job’s id, deadline, and profit.
+1.Read the text string and the pattern string.
 
-2.Sort the jobs in decreasing order of profit.
+2.Find the lengths of the text (n) and pattern (m).
 
-3.Find the maximum deadline among all jobs.
+3.Loop from index 0 to n - m.
 
-4.Create a time-slot array to track free and occupied slots.
+4.For each position, compare characters of text and pattern one by one.
 
-5.For each job in sorted order, assign it to the latest free slot before or on its deadline.
-
-6.Count how many jobs were done and compute the total profit.
-
-7.Print the number of jobs completed and the total profit.
+5.If all characters match, print the index where the pattern starts.
 
 ## Program:
 ```
@@ -31,65 +32,43 @@ Each job takes 1 unit of time and only one job can be done at a time. The goal i
 Developed by : MURALIDHARAN M
 Register Number: 212223040120
 */
-import java.util.*;
+import java.util.Scanner;
 
-public class JobScheduling {
+public class NaivePatternSearch {
 
-    static class Job {
-        int id, deadline, profit;
+    static void search(String text, String pattern){
+        int n = text.length();
+        int m = pattern.length();
 
-        Job(int id, int deadline, int profit) {
-            this.id = id;
-            this.deadline = deadline;
-            this.profit = profit;
-        }
-    }
-
-    public static int[] jobScheduling(Job[] jobs, int n) {
-        Arrays.sort(jobs, (a, b) -> b.profit - a.profit);
-        int maxDeadline = 0;
-
-        for(Job job : jobs) {
-            maxDeadline = Math.max(maxDeadline, job.deadline);
-        }
-
-        boolean[] slot = new boolean[maxDeadline + 1];
-        int jobsDone = 0, totalProfit = 0;
-
-        for(Job job : jobs) {
-            for(int j = job.deadline; j > 0; j--) {
-                if(!slot[j]) {
-                    slot[j] = true;
-                    jobsDone++;
-                    totalProfit += job.profit;
+        for(int i = 0; i <= n - m; i++){
+            int j;
+            for(j = 0; j < m; j++){
+                if(text.charAt(i + j) != pattern.charAt(j)){
                     break;
                 }
             }
+            if(j == m){
+                System.out.println("Pattern found at index " + i);
+            }
         }
-        return new int[]{jobsDone, totalProfit};
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        Job[] jobs = new Job[n];
+        Scanner scanner = new Scanner(System.in);
 
-        for(int i = 0; i < n; i++) {
-            int id = sc.nextInt();
-            int deadline = sc.nextInt();
-            int profit = sc.nextInt();
-            jobs[i] = new Job(id, deadline, profit);
-        }
+        String text = scanner.nextLine();
+        String pattern = scanner.nextLine();
 
-        int[] result = jobScheduling(jobs, n);
-        System.out.println(result[0] + " " + result[1]);
+        search(text, pattern);
+
+        scanner.close();
     }
 }
 ```
 
 ## Output:
 
-<img width="1088" height="452" alt="516748585-5144a831-ee44-4454-868b-ea0a42ace496" src="https://github.com/user-attachments/assets/7a5b7a85-fcea-4158-aeeb-dc7201865d8f" />
+<img width="1183" height="304" alt="517206941-c4a3cdcc-80fb-43b0-a41e-1050bc74351c" src="https://github.com/user-attachments/assets/c6ec17b9-ec75-4ce1-8180-fcfffde3bdeb" />
 
 
 ## Result:
